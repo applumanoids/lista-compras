@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#e83e8c">
+<title>Minha Lista de Compras</title>
+<style>
+:root{--pink:#e83e8c;--pink2:#ff6faa;--light:#fff1f7;--line:#f3c9db;--text:#2f2730;--muted:#766b72;--white:#fff;--danger:#c62828;--shadow:0 10px 28px rgba(164,41,94,.12)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:#fff8fb;color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer}.app{max-width:720px;margin:auto;min-height:100vh;padding-bottom:120px}
+.sticky{position:sticky;top:0;z-index:20;background:rgba(255,248,251,.96);backdrop-filter:blur(10px);padding:12px 14px 10px;border-bottom:1px solid #f6dbe7}
+.total-card{background:linear-gradient(135deg,var(--pink),var(--pink2));color:white;border-radius:20px;padding:16px 18px;box-shadow:var(--shadow)}
+.total-label{font-size:12px;font-weight:800;letter-spacing:.08em;opacity:.9}.total-value{font-size:31px;font-weight:900;line-height:1.15;margin-top:3px}
+.top-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.btn{border:0;border-radius:14px;padding:12px 13px;font-weight:800;min-height:46px}.btn-soft{background:white;color:#9d275c;border:1px solid #f2c9da}.btn-primary{background:var(--pink);color:white}.btn-danger{background:#fff0f0;color:var(--danger);border:1px solid #ffd0d0}
+.content{padding:14px}.add-box{background:white;border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:0 5px 18px rgba(164,41,94,.06);margin-bottom:13px}.add-title{display:flex;justify-content:space-between;align-items:center;gap:8px}.add-title strong{font-size:17px}.add-form{display:none;grid-template-columns:1fr 115px;gap:8px;margin-top:10px}.add-form.open{display:grid}.field{width:100%;border:1px solid #e8ccd8;background:#fffafd;border-radius:13px;padding:13px 12px;outline:none;font-size:16px}.field:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,62,140,.10)}.confirm{grid-column:1/-1}
+.table-head{display:grid;grid-template-columns:minmax(78px,1.5fr) 64px 88px 76px 28px;gap:5px;align-items:center;padding:0 7px 6px;color:#8b6b79;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.03em}.table-head span:nth-child(2),.table-head span:nth-child(3),.table-head span:nth-child(4){text-align:center}.list{display:grid;gap:5px}.item{display:grid;grid-template-columns:minmax(78px,1.5fr) 64px 88px 76px 28px;gap:5px;align-items:center;background:white;border:1px solid #f0d5e0;border-radius:11px;padding:7px;box-shadow:0 2px 8px rgba(90,35,60,.04);min-height:48px}.name{font-weight:850;font-size:13px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.unit{color:var(--muted);font-size:11px;text-align:center;white-space:nowrap}.delete{border:0;background:#fff0f5;color:#b62b67;border-radius:8px;width:28px;height:28px;font-size:13px;font-weight:900;padding:0}.qty{display:grid;grid-template-columns:26px 1fr 26px;align-items:center;background:var(--light);border-radius:9px;padding:2px}.qty button{width:26px;height:26px;border:0;border-radius:7px;background:white;color:var(--pink);font-size:16px;font-weight:900;padding:0;line-height:1}.qty span{text-align:center;font-size:12px;font-weight:900;min-width:0}.item-total{text-align:right;font-size:11px;font-weight:900;color:#a2265e;white-space:nowrap}.empty{text-align:center;padding:42px 20px;color:#8a7780}.empty .icon{font-size:44px;margin-bottom:8px}.bottom-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.bottom-actions .wide{grid-column:1/-1}
+@media(max-width:380px){.content{padding-left:8px;padding-right:8px}.table-head,.item{grid-template-columns:minmax(66px,1.35fr) 57px 82px 68px 26px;gap:3px}.name{font-size:12px}.unit,.item-total{font-size:10px}.qty{grid-template-columns:24px 1fr 24px}.qty button{width:24px;height:26px}}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,25px);background:#30252a;color:white;padding:11px 16px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:.22s;z-index:100;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.toast.show{opacity:1;transform:translate(-50%,0)}
+.calc-overlay{display:none;position:fixed;inset:0;background:rgba(36,20,28,.46);z-index:60;align-items:flex-end;justify-content:center}.calc-overlay.open{display:flex}.calc{width:min(100%,520px);background:#fff8fb;border-radius:25px 25px 0 0;padding:14px 14px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -12px 40px rgba(0,0,0,.18)}.calc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.calc-top strong{font-size:18px}.close{border:0;background:#f7dce8;color:#8e2854;border-radius:50%;width:40px;height:40px;font-size:20px}.display{width:100%;height:72px;border:1px solid #efcadb;background:white;border-radius:16px;padding:10px 14px;text-align:right;font-size:30px;font-weight:800;overflow:hidden;margin-bottom:10px}.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.key{border:0;border-radius:15px;min-height:56px;background:white;color:#382d32;font-size:20px;font-weight:850;box-shadow:0 2px 9px rgba(83,31,55,.09)}.key.op{background:#ffe0ed;color:#a51f5a}.key.eq{background:var(--pink);color:white}.key.clear{background:#ffe8e8;color:#ad2929}
+@media(min-width:650px){.sticky{padding-top:18px}.content{padding:18px}.add-form{grid-template-columns:1fr 160px auto}.confirm{grid-column:auto}.bottom-actions{grid-template-columns:1fr 1fr 1fr}.bottom-actions .wide{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="sticky">
+    <div class="total-card">
+      <div class="total-label">TOTAL DA COMPRA</div>
+      <div class="total-value" id="grandTotal">R$ 0,00</div>
+    </div>
+    <div class="top-actions">
+      <button class="btn btn-soft" id="calcBtn">🧮 Calculadora</button>
+      <button class="btn btn-soft" id="copyBtn">📋 Copiar lista</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="add-box">
+      <div class="add-title">
+        <strong>Minha lista</strong>
+        <button class="btn btn-primary" id="toggleAdd">＋ Adicionar item</button>
+      </div>
+      <div class="add-form" id="addForm">
+        <input class="field" id="productName" type="text" placeholder="Nome do produto" autocomplete="off">
+        <input class="field" id="productPrice" type="text" inputmode="decimal" placeholder="R$ 0,00" autocomplete="off">
+        <button class="btn btn-primary confirm" id="addBtn">Adicionar</button>
+      </div>
+    </section>
+
+    <div class="table-head" id="tableHead" style="display:none"><span>Produto</span><span>Unit.</span><span>Qtd.</span><span>Total</span><span></span></div>
+    <section class="list" id="list"></section>
+
+    <div class="bottom-actions">
+      <button class="btn btn-soft" id="shareBtn">↗ Compartilhar</button>
+      <button class="btn btn-danger wide" id="clearBtn">🗑 Limpar lista</button>
+    </div>
+  </main>
+</div>
+
+<div class="calc-overlay" id="calcOverlay" aria-hidden="true">
+  <div class="calc" role="dialog" aria-label="Calculadora">
+    <div class="calc-top"><strong>Calculadora</strong><button class="close" id="closeCalc">✕</button></div>
+    <div class="display" id="calcDisplay">0</div>
+    <div class="keys" id="keys">
+      <button class="key clear" data-key="C">C</button><button class="key op" data-key="÷">÷</button><button class="key op" data-key="×">×</button><button class="key op" data-key="-">−</button>
+      <button class="key" data-key="7">7</button><button class="key" data-key="8">8</button><button class="key" data-key="9">9</button><button class="key op" data-key="+">+</button>
+      <button class="key" data-key="4">4</button><button class="key" data-key="5">5</button><button class="key" data-key="6">6</button><button class="key eq" data-key="=">=</button>
+      <button class="key" data-key="1">1</button><button class="key" data-key="2">2</button><button class="key" data-key="3">3</button><button class="key" data-key=",">,</button>
+      <button class="key" data-key="0" style="grid-column:span 2">0</button><button class="key" data-key="00">00</button><button class="key" data-key="⌫">⌫</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY='listaComprasRosa_v1';
+let items=[];
+const $=s=>document.querySelector(s);
+const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(n)||0);
+const escapeHtml=s=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+
+function load(){try{items=JSON.parse(localStorage.getItem(STORAGE_KEY))||[]}catch{items=[]} render()}
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(items))}
+function total(){return items.reduce((s,i)=>s+i.price*i.qty,0)}
+function render(){
+  $('#grandTotal').textContent=money(total());
+  const list=$('#list');
+  const head=$('#tableHead');
+  if(!items.length){head.style.display='none';list.innerHTML='<div class="empty"><div class="icon">🛒</div><strong>Sua lista está vazia</strong><br><span>Adicione o primeiro produto para começar.</span></div>';return}
+  head.style.display='grid';
+  list.innerHTML=items.map(i=>`<article class="item">
+    <div class="name" title="${escapeHtml(i.name)}">${escapeHtml(i.name)}</div>
+    <div class="unit">${money(i.price)}</div>
+    <div class="qty"><button data-action="minus" data-id="${i.id}" aria-label="Diminuir">−</button><span>${i.qty}</span><button data-action="plus" data-id="${i.id}" aria-label="Aumentar">＋</button></div>
+    <div class="item-total">${money(i.price*i.qty)}</div>
+    <button class="delete" data-action="delete" data-id="${i.id}" aria-label="Excluir ${escapeHtml(i.name)}">✕</button>
+  </article>`).join('');
+}
+function commit(){save();render()}
+function parsePrice(v){v=String(v).trim().replace(/R\$/gi,'').replace(/\s/g,'');if(!v)return NaN;if(v.includes(',')&&v.includes('.'))v=v.replace(/\./g,'').replace(',','.');else if(v.includes(','))v=v.replace(',','.');return Number(v)}
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>t.classList.remove('show'),1800)}
+function addItem(){const name=$('#productName').value.trim();const price=parsePrice($('#productPrice').value);if(!name){toast('Digite o nome do produto');$('#productName').focus();return}if(!Number.isFinite(price)||price<0){toast('Digite um valor válido');$('#productPrice').focus();return}items.unshift({id:Date.now()+Math.random(),name,price,qty:1});commit();$('#productName').value='';$('#productPrice').value='';$('#productName').focus();toast('Item adicionado')}
+
+$('#toggleAdd').onclick=()=>{const f=$('#addForm');f.classList.toggle('open');if(f.classList.contains('open'))setTimeout(()=>$('#productName').focus(),50)};
+$('#addBtn').onclick=addItem;
+$('#productName').addEventListener('keydown',e=>{if(e.key==='Enter')$('#productPrice').focus()});
+$('#productPrice').addEventListener('keydown',e=>{if(e.key==='Enter')addItem()});
+$('#list').onclick=e=>{const b=e.target.closest('button[data-action]');if(!b)return;const id=Number(b.dataset.id),idx=items.findIndex(i=>i.id===id);if(idx<0)return;const a=b.dataset.action;if(a==='plus')items[idx].qty++;if(a==='minus'){if(items[idx].qty>1)items[idx].qty--;else items.splice(idx,1)}if(a==='delete')items.splice(idx,1);commit()};
+
+function listText(){let txt='🛒 LISTA DE COMPRAS\n\n';if(!items.length)return txt+'Lista vazia\n\nTOTAL: '+money(0);txt+=items.map(i=>`${i.qty}x ${i.name} — ${money(i.price*i.qty)}`).join('\n');return txt+'\n\nTOTAL: '+money(total())}
+$('#copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(listText());toast('Lista copiada!')}catch{const ta=document.createElement('textarea');ta.value=listText();document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Lista copiada!')}};
+$('#shareBtn').onclick=async()=>{if(navigator.share){try{await navigator.share({title:'Lista de Compras',text:listText()})}catch(e){if(e.name!=='AbortError')toast('Não foi possível compartilhar')}}else{try{await navigator.clipboard.writeText(listText());toast('Compartilhamento indisponível. Lista copiada!')}catch{toast('Use o botão Copiar lista')}}};
+$('#clearBtn').onclick=()=>{if(!items.length){toast('A lista já está vazia');return}if(confirm('Tem certeza que deseja apagar toda a lista?')){items=[];commit();toast('Lista limpa')}};
+
+const overlay=$('#calcOverlay'),display=$('#calcDisplay');let expr='';
+function pretty(s){return s.replace(/\*/g,'×').replace(/\//g,'÷').replace(/\./g,',')||'0'}
+$('#calcBtn').onclick=()=>{overlay.classList.add('open');overlay.setAttribute('aria-hidden','false')};
+$('#closeCalc').onclick=closeCalc;overlay.addEventListener('click',e=>{if(e.target===overlay)closeCalc()});function closeCalc(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true')}
+$('#keys').onclick=e=>{const b=e.target.closest('[data-key]');if(!b)return;const k=b.dataset.key;if(k==='C'){expr='';display.textContent='0';return}if(k==='⌫'){expr=expr.slice(0,-1);display.textContent=pretty(expr);return}if(k==='='){try{if(!expr)return;const safe=expr.replace(/,/g,'.');if(!/^[0-9+\-*/.() ]+$/.test(safe))throw 0;const result=Function('"use strict";return ('+safe+')')();if(!Number.isFinite(result))throw 0;expr=String(Math.round((result+Number.EPSILON)*100000000)/100000000);display.textContent=pretty(expr)}catch{display.textContent='Erro';expr=''}return}let val=k==='×'?'*':k==='÷'?'/':k===','?'.':k;const ops='+-*/';if(ops.includes(val)&&(!expr||ops.includes(expr.slice(-1)))){if(expr)expr=expr.slice(0,-1)+val}else expr+=val;display.textContent=pretty(expr)};
+load();
+</script>
+</body>
+</html>
