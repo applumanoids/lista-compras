@@ -1,0 +1,14 @@
+// Catálogo inicial de produtos. Para incluir produtos, basta adicionar nomes nas categorias.
+window.CATALOGO = {
+  "Mercearia": ["Arroz","Feijão","Açúcar","Sal","Café","Macarrão","Farinha de trigo","Farinha de mandioca","Fubá","Óleo de soja","Azeite","Vinagre","Molho de tomate","Extrato de tomate","Milho verde","Ervilha","Atum","Sardinha","Aveia","Granola","Biscoito","Bolacha recheada","Cream cracker","Achocolatado","Chocolate em pó","Leite condensado","Creme de leite","Gelatina","Fermento","Maionese","Ketchup","Mostarda","Tempero pronto","Orégano","Pimenta do reino","Lentilha","Grão-de-bico","Tapioca","Cuscuz","Pipoca","Mel","Geleia","Amendoim","Chá","Sopa instantânea","Barra de cereal"],
+  "Laticínios e frios": ["Leite","Leite integral","Leite desnatado","Manteiga","Margarina","Queijo mussarela","Queijo prato","Queijo minas","Requeijão","Iogurte","Cream cheese","Ricota","Presunto","Peito de peru","Mortadela","Salame","Ovos","Nata"],
+  "Padaria": ["Pão","Pão francês","Pão de forma","Pão integral","Bisnaguinha","Bolo","Torrada","Pão de queijo","Rosca","Tortilla"],
+  "Carnes e peixes": ["Carne moída","Bife","Patinho","Alcatra","Costela","Picanha","Acém","Frango","Peito de frango","Coxa e sobrecoxa","Linguiça","Salsicha","Bacon","Hambúrguer","Peixe","Filé de tilápia","Camarão","Carne de porco","Bisteca"],
+  "Frutas": ["Banana","Maçã","Laranja","Limão","Mamão","Melancia","Melão","Abacaxi","Uva","Manga","Morango","Pera","Abacate","Maracujá","Goiaba","Tangerina","Kiwi","Coco"],
+  "Verduras e legumes": ["Tomate","Cebola","Alho","Batata","Batata doce","Cenoura","Alface","Couve","Brócolis","Repolho","Pepino","Pimentão","Abobrinha","Chuchu","Beterraba","Abóbora","Mandioca","Cheiro-verde","Coentro","Salsinha","Gengibre","Espinafre","Rúcula","Couve-flor","Berinjela","Milho"],
+  "Bebidas": ["Água mineral","Refrigerante","Suco","Suco em pó","Cerveja","Vinho","Água de coco","Energético","Café solúvel","Leite de aveia"],
+  "Congelados": ["Pizza congelada","Lasanha congelada","Nuggets","Sorvete","Hambúrguer congelado","Legumes congelados","Polpa de fruta","Batata palito congelada","Massa de pastel"],
+  "Limpeza": ["Detergente","Sabão em pó","Sabão em barra","Amaciante","Água sanitária","Desinfetante","Multiuso","Limpa vidros","Esponja","Palha de aço","Pano de chão","Saco de lixo","Papel alumínio","Filme plástico","Guardanapo","Lustra móveis","Álcool","Limpa piso","Inseticida","Vassoura","Rodo","Luvas"],
+  "Higiene e beleza": ["Sabonete","Shampoo","Condicionador","Creme dental","Escova de dente","Fio dental","Enxaguante bucal","Papel higiênico","Desodorante","Absorvente","Algodão","Cotonete","Protetor solar","Hidratante","Lâmina de barbear","Fralda","Lenço umedecido","Papel toalha","Acetona","Esmalte"],
+  "Pets": ["Ração para cães","Ração para gatos","Areia higiênica","Petisco pet"]
+};
