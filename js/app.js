@@ -258,37 +258,47 @@ $('#btnInfo').addEventListener('click',()=>{
       <b>💰 Conheça a Carteira</b><span>Organize sua vida financeira com a Minha Carteira.</span></a>
     <a class="info-card" href="https://applumanoids.github.io/sitelumanoids.com/" target="_blank" rel="noopener">
       <b>🚀 Soluções Lumanoids</b><span>Conheça o site e as soluções em dados, apps e automação.</span></a>
+    <div id="instalacaoInfo" class="instalacao-info"><button id="btnInstalarInfo" class="btn-prim" type="button">📲 Instalar aplicativo no celular</button><p id="instrucaoInstalarInfo" class="dica" hidden></p></div>
     <div class="info-preco">Sabe quanto custaria criar um app como esse na Lumanoids? <strong>R$ 200</strong>.</div>
     <div class="acoes"><button class="btn-sec" id="iFim">Fechar</button></div>`);
   $('#iFim').onclick=fechar;
+  atualizarInstalacaoInfo();
+  $('#btnInstalarInfo')?.addEventListener('click', iniciarInstalacao);
 });
 
 // ---------- Toast ----------
 let tt; function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('on'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('on'),2200); }
 
-// ---------- Instalação PWA: apenas no rodapé ----------
+// ---------- Instalação PWA dentro de Informações ----------
 let promptInstalar=null;
-const instalacao=$('#instalacaoRodape');
-const botaoInstalar=$('#btnInstalar');
-const instrucao=$('#instrucaoInstalar');
-const instalado=()=>matchMedia('(display-mode: standalone)').matches || navigator.standalone===true;
+const instalado=()=>window.matchMedia('(display-mode: standalone)').matches || navigator.standalone===true;
 const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
-function atualizarInstalacao(){
-  const registrado=localStorage.getItem('lumanoids.compras.instalado')==='1';
-  instalacao.hidden=!!instalado() || registrado;
-  if(instalado() || registrado) return;
-  botaoInstalar.hidden=false;
-  instrucao.hidden=true;
+function atualizarInstalacaoInfo(){
+  const area=$('#instalacaoInfo');
+  if(!area) return;
+  const confirmado=localStorage.getItem('lumanoids.compras.instalado')==='1';
+  area.hidden=instalado() || confirmado;
 }
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptInstalar=e;atualizarInstalacao();});
-botaoInstalar.addEventListener('click',async()=>{
-  if(promptInstalar){const evento=promptInstalar;promptInstalar=null;await evento.prompt();const escolha=await evento.userChoice;if(escolha.outcome==='accepted'){try{localStorage.setItem('lumanoids.compras.instalado','1')}catch{}}atualizarInstalacao();return;}
+async function iniciarInstalacao(){
+  const instrucao=$('#instrucaoInstalarInfo');
+  if(promptInstalar){
+    const evento=promptInstalar;
+    promptInstalar=null;
+    evento.prompt();
+    const escolha=await evento.userChoice;
+    if(escolha.outcome==='accepted'){
+      try{localStorage.setItem('lumanoids.compras.instalado','1')}catch{}
+    }
+    atualizarInstalacaoInfo();
+    return;
+  }
   instrucao.hidden=false;
-  instrucao.textContent=ios?'No Safari, toque em Compartilhar e depois em Adicionar à Tela de Início.':'No Chrome, abra o menu ⋮ e selecione Instalar app ou Adicionar à tela inicial.';
-});
-window.addEventListener('appinstalled',()=>{try{localStorage.setItem('lumanoids.compras.instalado','1')}catch{} atualizarInstalacao();});
-atualizarInstalacao();
-
+  instrucao.textContent=ios
+    ? 'No Safari, toque no ícone Compartilhar e escolha “Adicionar à Tela de Início”. Depois toque em Adicionar.'
+    : 'No Chrome, toque no menu ⋮ do navegador e escolha “Instalar app” ou “Adicionar à tela inicial”. Se estiver abrindo pelo Instagram ou WhatsApp, abra primeiro no Chrome.';
+}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptInstalar=e;atualizarInstalacaoInfo();});
+window.addEventListener('appinstalled',()=>{try{localStorage.setItem('lumanoids.compras.instalado','1')}catch{} atualizarInstalacaoInfo();});
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 render();
 })();
