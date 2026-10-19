@@ -1,6 +1,6 @@
 {
   "name": "Lista de Compras",
-  "short_name": "Lista de Compras",
+  "short_name": "Compras",
   "description": "Monte a lista em casa e acompanhe o total no supermercado.",
   "lang": "pt-BR",
   "start_url": "./index.html",

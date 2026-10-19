@@ -1,9 +1,9 @@
 // Service Worker – Minha Lista de Compras (Lumanoids)
 // Ao alterar qualquer arquivo do app, aumente a versão abaixo.
-const VERSAO = 'compras-v5-secoes';
+const VERSAO = 'compras-v6-oficial';
 const ARQUIVOS = [
   './', './index.html', './manifest.webmanifest',
-  './css/style.css', './js/app.js', './js/catalogo.js',
+  './fonts/Inter-Latin.woff2', './css/style.css', './js/app.js', './js/configuracoes.js', './js/catalogo.js',
   './icons/icon-192.png', './icons/icon-512.png',
   './icons/icon-maskable-512.png', './icons/apple-touch-icon.png'
 ];

@@ -199,3 +199,13 @@ main{padding:2px 9px 25px}
 .contadores-rodape .chip b{font-size:.85rem;line-height:1}
 .contadores-rodape .chip span{font-size:.61rem;line-height:1;white-space:nowrap}
 @media(max-width:350px){.contadores-rodape .chip span{font-size:.55rem}}
+
+/* Padrão oficial Lumanoids */
+@font-face{font-family:Inter;src:url('../fonts/Inter-Latin.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+body,button,input{font-family:Inter,system-ui,sans-serif}
+.topo-info{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.marca{display:flex;align-items:center;gap:8px;font-size:1rem;font-weight:800;min-width:0}.marca img{border-radius:10px;flex-shrink:0}.marca span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topo-botoes{display:flex;gap:7px;flex-shrink:0}.topo-botoes .btn-info{background:#fff;border:1px solid var(--borda);color:var(--rosa-esc);width:39px;height:39px;font-size:1.25rem;box-shadow:0 3px 9px #9e22502b}
+.area-carrinho{box-shadow:0 9px 25px rgba(21,128,61,.17),0 2px 7px #15803d1c}.area-lista{box-shadow:0 9px 25px rgba(47,111,237,.17),0 2px 7px #2f6fed1c}
+.creditos a{color:var(--rosa-esc);font-weight:800}.config-linha{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0}.config-linha select{padding:10px;border:1px solid var(--borda);border-radius:10px;max-width:60%}.config-caixa{background:#fff8fb;border:1px solid var(--borda);padding:12px;border-radius:14px;margin:12px 0}.config-caixa h4{margin:0 0 7px}.config-caixa p{font-size:.84rem;line-height:1.5;color:var(--suave)}.config-caixa button{width:100%;margin:4px 0}.config-caixa .btn-sec,.config-caixa .btn-perigo{border-radius:12px;padding:12px}.sheet a{overflow-wrap:anywhere}
+@media(max-width:370px){.marca{font-size:.88rem}.topo{padding-left:9px;padding-right:9px}main{padding-left:9px;padding-right:9px}}

@@ -19,7 +19,7 @@ function salvar(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){
 
 let itens = carregar(CHAVE,[]);
 let custom = carregar(CHAVE_CUSTOM,[]);
-const gravar = () => salvar(CHAVE,itens);
+const gravar = () => { salvar(CHAVE,itens); window.LumanoidsPersistir?.(); };
 
 // Catálogo = inicial + cadastrados por mim
 function catalogoCompleto(){
@@ -30,7 +30,7 @@ function catalogoCompleto(){
 }
 const existe = nome => itens.find(i=>norm(i.nome)===norm(nome));
 function registrarSeNovo(nome){
-  if (!catalogoCompleto().some(p=>norm(p.nome)===norm(nome))){ custom.push(nome); salvar(CHAVE_CUSTOM,custom); }
+  if (!catalogoCompleto().some(p=>norm(p.nome)===norm(nome))){ custom.push(nome); salvar(CHAVE_CUSTOM,custom); window.LumanoidsPersistir?.(); }
 }
 
 // ---------- Render ----------
@@ -259,19 +259,14 @@ $('#btnLimpar').addEventListener('click',()=>{
 
 // ---------- Informações ----------
 $('#btnInfo').addEventListener('click',()=>{
-  abrir(`<h3>Lumanoids</h3>
-    <a class="info-card" href="https://applumanoids.github.io/Tudo-em-dia/" target="_blank" rel="noopener noreferrer">
-       <b>✅ Conheça o Tudo em Dia</b><span>Conheça o aplicativo Tudo em Dia e organize seus compromissos.</span></a>
-    <a class="info-card" href="https://applumanoids.github.io/Carteira/" target="_blank" rel="noopener">
-      <b>💰 Conheça a Carteira</b><span>Organize sua vida financeira com a Minha Carteira.</span></a>
-    <a class="info-card" href="https://applumanoids.github.io/sitelumanoids.com/" target="_blank" rel="noopener">
-      <b>🚀 Soluções Lumanoids</b><span>Conheça o site e as soluções em dados, apps e automação.</span></a>
+  abrir(`<h3>ⓘ Informações</h3>
+    <div class="config-caixa"><h4>🛒 Sobre o aplicativo</h4><p>Prepare sua lista de compras antes de sair de casa ou adicione produtos diretamente ao carrinho durante as compras. Registre preços e quantidades, acompanhe o total, consulte o catálogo e use a calculadora, inclusive offline após instalar.</p></div>
+    <a class="info-card" href="https://applumanoids.github.io/Tudo-em-dia/" rel="noopener noreferrer"><b>✅ Conheça também o Tudo em Dia ↗</b><span>Abrir outro aplicativo Lumanoids</span></a>
+    <a class="info-card" href="https://applumanoids.github.io/sitelumanoids.com/" rel="noopener noreferrer"><b>🚀 Desenvolvido por Lumanoids ↗</b><span>Visitar o site oficial</span></a>
+    <div class="config-caixa"><h4>🔒 Privacidade e armazenamento de dados</h4><p>Este aplicativo foi desenvolvido para funcionar com armazenamento local. As informações cadastradas são mantidas no próprio dispositivo e navegador utilizado.</p><p>Os dados cadastrados não são enviados para servidores externos, desde que o aplicativo não utilize recursos de sincronização ou serviços online.</p><p>A Lumanoids não recebe automaticamente os dados registrados no aplicativo.</p><p><strong>Atenção:</strong> limpar os dados de navegação, excluir o armazenamento do site, reinstalar o navegador ou trocar de dispositivo pode resultar na perda das informações cadastradas.</p><p>Recomendamos realizar backups periódicos para proteger seus dados.</p></div>
     <div id="instalacaoInfo" class="instalacao-info"><button id="btnInstalarInfo" class="btn-prim" type="button">📲 Instalar aplicativo no celular</button><p id="instrucaoInstalarInfo" class="dica" hidden></p></div>
-    <div class="info-preco">Sabe quanto custaria criar um app como esse na Lumanoids? <strong>R$ 200</strong>.</div>
     <div class="acoes"><button class="btn-sec" id="iFim">Fechar</button></div>`);
-  $('#iFim').onclick=fechar;
-  atualizarInstalacaoInfo();
-  $('#btnInstalarInfo')?.addEventListener('click', iniciarInstalacao);
+  $('#iFim').onclick=fechar; atualizarInstalacaoInfo(); $('#btnInstalarInfo')?.addEventListener('click', iniciarInstalacao);
 });
 
 // ---------- Toast ----------
@@ -284,8 +279,7 @@ const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
 function atualizarInstalacaoInfo(){
   const area=$('#instalacaoInfo');
   if(!area) return;
-  const confirmado=localStorage.getItem('lumanoids.compras.instalado')==='1';
-  area.hidden=instalado() || confirmado;
+  area.hidden=instalado();
 }
 async function iniciarInstalacao(){
   const instrucao=$('#instrucaoInstalarInfo');
@@ -294,9 +288,7 @@ async function iniciarInstalacao(){
     promptInstalar=null;
     evento.prompt();
     const escolha=await evento.userChoice;
-    if(escolha.outcome==='accepted'){
-      try{localStorage.setItem('lumanoids.compras.instalado','1')}catch{}
-    }
+    if(escolha.outcome==='accepted') toast('Conclua a instalação no celular');
     atualizarInstalacaoInfo();
     return;
   }
@@ -306,7 +298,8 @@ async function iniciarInstalacao(){
     : 'No Chrome, toque no menu ⋮ do navegador e escolha “Instalar app” ou “Adicionar à tela inicial”. Se estiver abrindo pelo Instagram ou WhatsApp, abra primeiro no Chrome.';
 }
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptInstalar=e;atualizarInstalacaoInfo();});
-window.addEventListener('appinstalled',()=>{try{localStorage.setItem('lumanoids.compras.instalado','1')}catch{} atualizarInstalacaoInfo();});
+window.addEventListener('appinstalled',()=>{atualizarInstalacaoInfo();});
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 render();
+window.LumanoidsCompras={ler:()=>({itens:structuredClone(itens),custom:structuredClone(custom)}),aplicar:(d)=>{itens=d.itens;custom=d.custom;gravar();salvar(CHAVE_CUSTOM,custom);render();},limpar:()=>{itens=[];custom=[];gravar();salvar(CHAVE_CUSTOM,custom);render();}};
 })();
