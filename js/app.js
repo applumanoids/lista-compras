@@ -102,6 +102,18 @@ box.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) ret
   adicionarLista(b.dataset.nome); inp.value=''; box.hidden=true; inp.focus(); });
 function addDoCampo(){ if(adicionarLista(inp.value)){ } inp.value=''; box.hidden=true; inp.focus(); }
 $('#btnAdd').addEventListener('click',addDoCampo);
+$('#btnAddCarrinho').addEventListener('click',()=>{
+  const nome=cap(inp.value||'');
+  if(!nome){toast('Digite o nome do produto primeiro');inp.focus();return;}
+  const ja=existe(nome);
+  if(ja){toast(`${ja.nome} já está ${ja.status==='lista'?'na lista':'no carrinho'}`);return;}
+  registrarSeNovo(nome);
+  const it={id:novoId(),nome,status:'lista',preco:null,qtd:1};
+  itens.push(it);gravar();render();inp.value='';box.hidden=true;
+  abrirSheetLista(it);
+  // A tela permite informar preço e quantidade antes de adicionar ao carrinho.
+  // Se cancelar, o produto permanece na lista, sem perder o cadastro.
+});
 inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); addDoCampo(); } });
 document.addEventListener('click',e=>{ if(!e.target.closest('.campo-busca')) box.hidden=true; });
 
@@ -240,7 +252,7 @@ $('#btnLimpar').addEventListener('click',()=>{
 // ---------- Informações ----------
 $('#btnInfo').addEventListener('click',()=>{
   abrir(`<h3>Lumanoids</h3>
-    <a class="info-card" href="https://applumanoids.github.io/Tudo-em-Dia/" target="_blank" rel="noopener noreferrer">
+    <a class="info-card" href="https://applumanoids.github.io/Tudo-em-dia/" target="_blank" rel="noopener noreferrer">
        <b>✅ Conheça o Tudo em Dia</b><span>Conheça o aplicativo Tudo em Dia e organize seus compromissos.</span></a>
     <a class="info-card" href="https://applumanoids.github.io/Carteira/" target="_blank" rel="noopener">
       <b>💰 Conheça a Carteira</b><span>Organize sua vida financeira com a Minha Carteira.</span></a>
@@ -262,18 +274,19 @@ const instrucao=$('#instrucaoInstalar');
 const instalado=()=>matchMedia('(display-mode: standalone)').matches || navigator.standalone===true;
 const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
 function atualizarInstalacao(){
-  instalacao.hidden=!!instalado();
-  if(instalado()) return;
+  const registrado=localStorage.getItem('lumanoids.compras.instalado')==='1';
+  instalacao.hidden=!!instalado() || registrado;
+  if(instalado() || registrado) return;
   botaoInstalar.hidden=false;
   instrucao.hidden=true;
 }
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptInstalar=e;atualizarInstalacao();});
 botaoInstalar.addEventListener('click',async()=>{
-  if(promptInstalar){const evento=promptInstalar;promptInstalar=null;await evento.prompt();await evento.userChoice;atualizarInstalacao();return;}
+  if(promptInstalar){const evento=promptInstalar;promptInstalar=null;await evento.prompt();const escolha=await evento.userChoice;if(escolha.outcome==='accepted'){try{localStorage.setItem('lumanoids.compras.instalado','1')}catch{}}atualizarInstalacao();return;}
   instrucao.hidden=false;
   instrucao.textContent=ios?'No Safari, toque em Compartilhar e depois em Adicionar à Tela de Início.':'No Chrome, abra o menu ⋮ e selecione Instalar app ou Adicionar à tela inicial.';
 });
-window.addEventListener('appinstalled',atualizarInstalacao);
+window.addEventListener('appinstalled',()=>{try{localStorage.setItem('lumanoids.compras.instalado','1')}catch{} atualizarInstalacao();});
 atualizarInstalacao();
 
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));

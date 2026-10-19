@@ -177,3 +177,7 @@ main{padding:2px 9px 25px}
 .instalacao-rodape{margin:18px 0 8px;text-align:center}.instalacao-rodape .btn-sec{width:100%;font-size:.91rem}
 .instalacao-rodape p{font-size:.83rem;color:var(--suave);line-height:1.4}
 @media(max-width:360px){.item-compacto .item-nome{font-size:.76rem}.preco-compacto{font-size:.7rem}.item-compacto{gap:3px!important}}
+
+/* Ação rápida para inserir um produto diretamente no carrinho */
+.btn-direto{display:block;width:100%;text-align:center;margin:8px 0 2px;padding:10px 12px;border:1.5px solid var(--verde-bd);background:var(--verde-bg);color:var(--verde);border-radius:12px;font-weight:750;font-size:.88rem}
+.btn-direto:active{filter:brightness(.96)}
