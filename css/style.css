@@ -187,3 +187,15 @@ main{padding:2px 9px 25px}
 .instalacao-info .btn-prim{width:100%;min-height:48px;font-size:.95rem}
 .instalacao-info .dica{line-height:1.5;margin-top:10px}
 [hidden]{display:none!important}
+
+/* Versão 5: seções independentes e cartões de resumo discretos */
+.area{background:#fff;box-shadow:0 7px 22px rgba(48,35,50,.16),0 2px 5px rgba(48,35,50,.08);border-width:1.5px;padding:12px 10px;margin-bottom:17px}
+.area-carrinho{border-color:#8bd2a4;box-shadow:0 8px 24px rgba(21,128,61,.17),0 2px 5px rgba(0,0,0,.08)}
+.area-lista{border-color:#a7c5ff;box-shadow:0 8px 24px rgba(47,111,237,.16),0 2px 5px rgba(0,0,0,.08)}
+.area .area-topo{padding-bottom:7px;border-bottom:1px solid rgba(0,0,0,.07)}
+.area-carrinho .btn-direto{margin:9px 0 8px;padding:9px 10px;box-shadow:0 2px 6px rgba(21,128,61,.12)}
+.contadores-rodape{margin:14px 0 8px;gap:5px}
+.contadores-rodape .chip{display:flex;align-items:center;justify-content:center;gap:4px;padding:5px 3px;border-radius:8px;min-height:29px}
+.contadores-rodape .chip b{font-size:.85rem;line-height:1}
+.contadores-rodape .chip span{font-size:.61rem;line-height:1;white-space:nowrap}
+@media(max-width:350px){.contadores-rodape .chip span{font-size:.55rem}}

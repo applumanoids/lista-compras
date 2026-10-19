@@ -25,11 +25,6 @@
     </div>
 
   </div>
-  <div class="contadores">
-    <div class="chip azul"><b id="cPend">0</b><span>pendentes</span></div>
-    <div class="chip verde"><b id="cCarr">0</b><span>no carrinho</span></div>
-    <div class="chip amarelo"><b id="cSem">0</b><span>sem preço</span></div>
-  </div>
 </header>
 
 <main>
@@ -44,6 +39,7 @@
       <h2 id="tCarrinho">🛒 Adicionados ao Carrinho</h2>
       <span class="area-qtd" id="qtdCarrinho">0</span>
     </div>
+    <button id="btnAddCarrinho" class="btn-direto" type="button">＋ Adicionar ao carrinho</button>
     <div id="listaCarrinho" class="itens"></div>
   </section>
 
@@ -61,11 +57,16 @@
       </div>
       <button id="btnAdd" class="btn-prim">Adicionar</button>
     </div>
-    <button id="btnAddCarrinho" class="btn-direto" type="button">🛒 Adicionar direto ao carrinho</button>
     <button id="btnCatalogo" class="btn-link">📚 Escolher do catálogo</button>
 
     <div id="listaPendentes" class="itens"></div>
   </section>
+
+  <div class="contadores contadores-rodape">
+    <div class="chip azul"><b id="cPend">0</b><span>pendentes</span></div>
+    <div class="chip verde"><b id="cCarr">0</b><span>no carrinho</span></div>
+    <div class="chip amarelo"><b id="cSem">0</b><span>sem preço</span></div>
+  </div>
 
   <div class="rodape-acoes">
     <button class="btn-perigo" id="btnLimpar">🗑️ Limpar lista</button>

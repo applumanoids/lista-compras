@@ -103,16 +103,24 @@ box.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) ret
 function addDoCampo(){ if(adicionarLista(inp.value)){ } inp.value=''; box.hidden=true; inp.focus(); }
 $('#btnAdd').addEventListener('click',addDoCampo);
 $('#btnAddCarrinho').addEventListener('click',()=>{
-  const nome=cap(inp.value||'');
-  if(!nome){toast('Digite o nome do produto primeiro');inp.focus();return;}
-  const ja=existe(nome);
-  if(ja){toast(`${ja.nome} já está ${ja.status==='lista'?'na lista':'no carrinho'}`);return;}
-  registrarSeNovo(nome);
-  const it={id:novoId(),nome,status:'lista',preco:null,qtd:1};
-  itens.push(it);gravar();render();inp.value='';box.hidden=true;
-  abrirSheetLista(it);
-  // A tela permite informar preço e quantidade antes de adicionar ao carrinho.
-  // Se cancelar, o produto permanece na lista, sem perder o cadastro.
+  abrir(`<h3>🛒 Adicionar direto ao carrinho</h3>
+    <label for="diretoNome">Produto</label><input id="diretoNome" type="text" placeholder="Nome do produto" autocomplete="off">
+    <div class="linha-2"><div><label>Quantidade</label>${stepperHTML(1)}</div>
+    <div><label for="diretoPreco">Preço unitário</label><input type="text" id="diretoPreco" class="preco-input" inputmode="decimal" placeholder="R$ 0,00"></div></div>
+    <p class="dica">O produto será colocado diretamente no carrinho, sem passar pela lista de compras.</p>
+    <div class="acoes"><button class="btn-verde" id="diretoSalvar">Adicionar ao carrinho</button><button class="btn-sec" id="diretoCancelar">Cancelar</button></div>`);
+  const getQ=ligarStepper(1);
+  $('#diretoNome').focus();
+  $('#diretoCancelar').onclick=fechar;
+  $('#diretoSalvar').onclick=()=>{
+    const nome=cap($('#diretoNome').value||'');
+    if(!nome){toast('Digite o nome do produto');$('#diretoNome').focus();return;}
+    const ja=existe(nome);
+    if(ja){toast(`${ja.nome} já está ${ja.status==='lista'?'na lista':'no carrinho'}`);return;}
+    registrarSeNovo(nome);
+    itens.push({id:novoId(),nome,status:'carrinho',preco:lerPreco($('#diretoPreco').value),qtd:getQ()});
+    gravar();fechar();render();toast(`${nome} adicionado ao carrinho`);
+  };
 });
 inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); addDoCampo(); } });
 document.addEventListener('click',e=>{ if(!e.target.closest('.campo-busca')) box.hidden=true; });
