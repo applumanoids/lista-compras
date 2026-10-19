@@ -1,6 +1,6 @@
 // Service Worker – Minha Lista de Compras (Lumanoids)
 // Ao alterar qualquer arquivo do app, aumente a versão abaixo.
-const VERSAO = 'compras-v1';
+const VERSAO = 'compras-v3-compacto';
 const ARQUIVOS = [
   './', './index.html', './manifest.webmanifest',
   './css/style.css', './js/app.js', './js/catalogo.js',

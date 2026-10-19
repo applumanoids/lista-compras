@@ -47,28 +47,19 @@ function render(){
   $('#qtdLista').textContent = lista.length;
 
   $('#listaCarrinho').innerHTML = carr.length ? carr.map(i=>{
-    const tem = !!i.preco;
-    return `<div class="item ${tem?'com':'sem'}" data-id="${i.id}">
-      <div class="item-linha">
-        <button class="item-nome" data-a="abrirCarrinho">${esc(i.nome)}</button>
-        <span class="selo">${tem?'Com preço':'Sem preço'}</span>
-      </div>
-      <div class="item-baixo">
-        <button class="preco-btn" data-a="abrirCarrinho">${tem?brl(i.preco):'Informar preço'}</button>
-        <div class="stepper"><button data-a="menos" aria-label="Diminuir">−</button><span>${i.qtd}</span><button data-a="mais" aria-label="Aumentar">+</button></div>
-        <span class="item-total">${tem?brl(i.preco*i.qtd):'—'}</span>
-        <button class="icone-btn" data-a="devolver" aria-label="Devolver à lista" title="Devolver à lista">↩</button>
-        <button class="icone-btn" data-a="excluir" aria-label="Excluir" title="Excluir">✕</button>
-      </div>
-    </div>`;}).join('') : '<div class="vazio">Nada no carrinho ainda. Toque em um produto da lista abaixo quando pegá-lo na prateleira.</div>';
-
+    const tem=!!i.preco;
+    return `<div class="item ${tem?'com':'sem'} item-compacto" data-id="${i.id}">
+      <button class="item-nome" data-a="abrirCarrinho" title="${esc(i.nome)}">${esc(i.nome)}</button>
+      <span class="qtd-compacta">${i.qtd}×</span>
+      <button class="preco-compacto" data-a="abrirCarrinho" aria-label="Editar preço">${tem?brl(i.preco*i.qtd):'Sem preço'}</button>
+      <button class="icone-btn" data-a="devolver" aria-label="Devolver à lista">↩</button>
+      <button class="icone-btn" data-a="excluir" aria-label="Excluir">×</button>
+    </div>`;}).join('') : '<div class="vazio">Nenhum produto no carrinho.</div>';
   $('#listaPendentes').innerHTML = lista.length ? lista.map(i=>`
-    <div class="item pend" data-id="${i.id}">
-      <div class="item-linha">
-        <button class="item-nome" data-a="abrirLista">${esc(i.nome)}</button>
-        <span class="selo">Pendente</span>
-      </div>
-    </div>`).join('') : '<div class="vazio">Sua lista está vazia. Digite um produto ou escolha do catálogo.</div>';
+    <div class="item pend item-compacto" data-id="${i.id}">
+      <button class="item-nome" data-a="abrirLista" title="${esc(i.nome)}">${esc(i.nome)}</button>
+      <button class="icone-btn acao-adicionar" data-a="abrirLista" aria-label="Adicionar ao carrinho">＋</button>
+    </div>`).join('') : '<div class="vazio">Digite um produto ou escolha do catálogo.</div>';
 }
 
 // ---------- Ações ----------
@@ -227,9 +218,7 @@ function textoLista(){
 async function copiar(txt){ try{ await navigator.clipboard.writeText(txt); return true; }catch{
   const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); let ok=false; try{ ok=document.execCommand('copy'); }catch{} ta.remove(); return ok; } }
 $('#btnCopiar').addEventListener('click',async()=>{ if(!itens.length) return toast('A lista está vazia'); toast(await copiar(textoLista())?'Lista copiada':'Não foi possível copiar'); });
-$('#btnShare').addEventListener('click',async()=>{ if(!itens.length) return toast('A lista está vazia');
-  if(navigator.share){ try{ await navigator.share({title:'Minha Lista de Compras',text:textoLista()}); }catch{} }
-  else toast(await copiar(textoLista())?'Lista copiada (compartilhar indisponível)':'Não foi possível compartilhar'); });
+
 
 // ---------- Limpar ----------
 $('#btnLimpar').addEventListener('click',()=>{
@@ -251,6 +240,8 @@ $('#btnLimpar').addEventListener('click',()=>{
 // ---------- Informações ----------
 $('#btnInfo').addEventListener('click',()=>{
   abrir(`<h3>Lumanoids</h3>
+    <a class="info-card" href="https://applumanoids.github.io/Tudo-em-Dia/" target="_blank" rel="noopener noreferrer">
+       <b>✅ Conheça o Tudo em Dia</b><span>Conheça o aplicativo Tudo em Dia e organize seus compromissos.</span></a>
     <a class="info-card" href="https://applumanoids.github.io/Carteira/" target="_blank" rel="noopener">
       <b>💰 Conheça a Carteira</b><span>Organize sua vida financeira com a Minha Carteira.</span></a>
     <a class="info-card" href="https://applumanoids.github.io/sitelumanoids.com/" target="_blank" rel="noopener">
@@ -263,17 +254,27 @@ $('#btnInfo').addEventListener('click',()=>{
 // ---------- Toast ----------
 let tt; function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('on'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('on'),2200); }
 
-// ---------- Instalação PWA ----------
+// ---------- Instalação PWA: apenas no rodapé ----------
 let promptInstalar=null;
-const banner=$('#bannerInstalar');
-const jaInstalado = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-const dispensado = carregar('lumanoids.compras.banner',false);
-window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); promptInstalar=e; if(!jaInstalado&&!dispensado){ $('#bannerTexto').textContent='Instale o app na tela inicial e use como aplicativo.'; $('#btnInstalar').hidden=false; banner.hidden=false; } });
-$('#btnInstalar').addEventListener('click',async()=>{ if(!promptInstalar) return; promptInstalar.prompt(); await promptInstalar.userChoice; promptInstalar=null; banner.hidden=true; });
-$('#btnFecharBanner').addEventListener('click',()=>{ banner.hidden=true; salvar('lumanoids.compras.banner',true); });
-window.addEventListener('appinstalled',()=>{ banner.hidden=true; });
-if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!jaInstalado&&!dispensado){
-  $('#bannerTexto').innerHTML='Para instalar: toque em <b>Compartilhar</b> e depois em <b>Adicionar à Tela de Início</b>.'; $('#btnInstalar').hidden=true; banner.hidden=false; }
+const instalacao=$('#instalacaoRodape');
+const botaoInstalar=$('#btnInstalar');
+const instrucao=$('#instrucaoInstalar');
+const instalado=()=>matchMedia('(display-mode: standalone)').matches || navigator.standalone===true;
+const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+function atualizarInstalacao(){
+  instalacao.hidden=!!instalado();
+  if(instalado()) return;
+  botaoInstalar.hidden=false;
+  instrucao.hidden=true;
+}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptInstalar=e;atualizarInstalacao();});
+botaoInstalar.addEventListener('click',async()=>{
+  if(promptInstalar){const evento=promptInstalar;promptInstalar=null;await evento.prompt();await evento.userChoice;atualizarInstalacao();return;}
+  instrucao.hidden=false;
+  instrucao.textContent=ios?'No Safari, toque em Compartilhar e depois em Adicionar à Tela de Início.':'No Chrome, abra o menu ⋮ e selecione Instalar app ou Adicionar à tela inicial.';
+});
+window.addEventListener('appinstalled',atualizarInstalacao);
+atualizarInstalacao();
 
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 render();

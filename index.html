@@ -17,12 +17,13 @@
 <body>
 
 <header class="topo">
+  <div class="topo-info"><button id="btnInfo" class="btn-info" aria-label="Informações">ⓘ Informações</button></div>
   <div class="total">
     <div>
       <span class="total-rotulo">Total da compra</span>
       <strong id="total">R$ 0,00</strong>
     </div>
-    <button id="btnInfo" class="btn-info" aria-label="Informações">ⓘ</button>
+
   </div>
   <div class="contadores">
     <div class="chip azul"><b id="cPend">0</b><span>pendentes</span></div>
@@ -32,12 +33,6 @@
 </header>
 
 <main>
-  <div id="bannerInstalar" class="banner" hidden>
-    <span id="bannerTexto">Instale o app na tela inicial.</span>
-    <button id="btnInstalar" class="btn-mini">Instalar</button>
-    <button id="btnFecharBanner" class="btn-x" aria-label="Fechar">✕</button>
-  </div>
-
   <div class="ferramentas">
     <button class="btn-sec" id="btnCalc">🧮 Calculadora</button>
     <button class="btn-sec" id="btnCopiar">📋 Copiar lista</button>
@@ -72,10 +67,10 @@
   </section>
 
   <div class="rodape-acoes">
-    <button class="btn-sec" id="btnShare">↗ Compartilhar</button>
     <button class="btn-perigo" id="btnLimpar">🗑️ Limpar lista</button>
   </div>
   <p class="aviso">Seus dados ficam salvos só neste aparelho. Limpar os dados do navegador ou desinstalar o app apaga a lista.</p>
+  <div id="instalacaoRodape" class="instalacao-rodape" hidden><button id="btnInstalar" class="btn-sec" type="button">📲 Instalar aplicativo no celular</button><p id="instrucaoInstalar" hidden></p></div>
   <footer class="creditos">Criado por <strong>Lumanoids</strong></footer>
 </main>
 

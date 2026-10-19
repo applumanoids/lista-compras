@@ -145,3 +145,35 @@ main{padding:4px 14px 40px;max-width:640px;margin:0 auto}
 .info-preco strong{color:var(--rosa-esc)}
 .creditos{font-weight:500;color:var(--suave);letter-spacing:0}
 .creditos strong{color:var(--rosa);font-weight:800}
+
+/* Ajustes compactos para celular */
+[hidden]{display:none!important}
+.topo{padding:calc(env(safe-area-inset-top) + 5px) 10px 7px}
+.topo-info{display:flex;justify-content:flex-end;margin-bottom:4px}
+.btn-info{width:auto;height:28px;border-radius:999px;padding:2px 10px;background:#fff;color:var(--rosa-esc);border:1px solid var(--borda);font-size:.78rem;font-weight:700}
+.total{padding:10px 16px;border-radius:17px}
+.total strong{font-size:1.95rem}
+.contadores{gap:5px;margin-top:6px}
+.chip{padding:5px 3px;border-radius:10px}
+.chip b{font-size:1rem}.chip span{font-size:.65rem}
+main{padding:2px 9px 25px}
+.ferramentas{gap:7px;margin:5px 0 10px}
+.ferramentas .btn-sec{padding:9px 5px;font-size:.84rem}
+.area{padding:9px 8px;margin-bottom:10px;border-radius:14px;border-width:1px}
+.area-topo{margin-bottom:6px}.area h2{font-size:.97rem}
+.area-qtd{font-size:.75rem;min-width:25px;padding:2px 7px}
+.itens{gap:3px;margin-top:5px}
+.item.item-compacto{display:flex;align-items:center;gap:5px;min-height:33px;height:33px;padding:2px 5px 2px 8px;border-radius:8px;border-width:1px;border-left-width:4px;overflow:hidden}
+.item-compacto .item-nome{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:normal;font-size:.81rem;padding:3px 0;line-height:1.2}
+.qtd-compacta{font-size:.72rem;font-weight:700;white-space:nowrap;color:var(--suave)}
+.preco-compacto{font-size:.75rem;font-weight:800;white-space:nowrap;padding:3px 1px;max-width:88px;overflow:hidden;text-overflow:ellipsis}
+.item-compacto.sem .preco-compacto{color:#936200;font-size:.69rem}
+.item-compacto .icone-btn{width:25px;height:26px;flex:0 0 25px;border-radius:6px;font-size:1rem;padding:0}
+.item-compacto .acao-adicionar{color:var(--azul);font-weight:800}
+.form-add{gap:5px}.campo-busca input{min-height:39px;border-radius:10px;padding:0 9px;font-size:.88rem}
+.form-add .btn-prim{min-height:39px;border-radius:10px;padding:0 10px;font-size:.82rem}
+.btn-link{font-size:.8rem;padding:6px 2px;margin:0}
+.rodape-acoes{display:block;margin:10px 0}.rodape-acoes .btn-perigo{width:100%;padding:10px}
+.instalacao-rodape{margin:18px 0 8px;text-align:center}.instalacao-rodape .btn-sec{width:100%;font-size:.91rem}
+.instalacao-rodape p{font-size:.83rem;color:var(--suave);line-height:1.4}
+@media(max-width:360px){.item-compacto .item-nome{font-size:.76rem}.preco-compacto{font-size:.7rem}.item-compacto{gap:3px!important}}
